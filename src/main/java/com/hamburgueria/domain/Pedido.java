@@ -25,11 +25,11 @@ public class Pedido extends PanacheEntity {
 
   private LocalDate data;
 
-  public Pedido( List< Produto > produtosPedido, StatusEnum status,
-      Cliente cliente ) {
+  public Pedido( List< Produto > produtosPedido, StatusEnum status, Cliente cliente, LocalDate data ) {
     this.produtosPedido = produtosPedido;
     this.status = status;
     this.cliente = cliente;
+    this.data = data;
   }
 
   public Pedido() {
