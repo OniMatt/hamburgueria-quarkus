@@ -14,8 +14,7 @@ public class Produto extends PanacheEntity {
   @ManyToMany(mappedBy = "produtosPedido")
   private List< Pedido > pedidos;
 
-  public Produto( Long id, String nome, double preco ) {
-    this.id = id;
+  public Produto( String nome, double preco ) {
     this.nome = nome;
     this.preco = preco;
   }
