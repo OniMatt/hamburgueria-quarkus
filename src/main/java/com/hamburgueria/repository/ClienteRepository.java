@@ -21,7 +21,7 @@ public class ClienteRepository implements PanacheRepository< Cliente > {
       cliente.setEmail( cliente.getEmail() );
       cliente.setSenha( cliente.getSenha() );
       cliente.setTelefone( cliente.getTelefone() );
-      this.persistAndFlush( cliente );
+      this.getEntityManager().merge( cliente );
     }, () -> {
       this.getEntityManager().merge( cliente );
     } );
@@ -31,12 +31,23 @@ public class ClienteRepository implements PanacheRepository< Cliente > {
     return this.listAll();
   }
 
-  public List< Cliente > getClienteById( Long id ) {
-    return this.list( "id like", id );
+  public Cliente getClienteById( Long id ) {
+    return this.findById( id );
   }
 
-  public List< Cliente > getClienteByEmail( String email ) {
-    return this.list( "SELECT c FROM Cliente c WHERE email like '" + email + "'");
+  public List< Cliente > getClienteByCpfOrEmail( String cpf, String email ) {
+    if( cpf != null && email == null ) {
+      return this.list( "SELECT c FROM Cliente c WHERE cpf like '" + cpf + "'");
+    }
+
+    if( cpf == null && email != null ) {
+      return this.list( "SELECT c FROM Cliente c WHERE email like '" + email + "'");
+    }
+
+    if( cpf != null && email != null ) {
+      return this.list( "SELECT c FROM Cliente c WHERE email like '" + email + "' AND cpf like '" + cpf + "'");
+    }
+    return this.listAll();
   }
 
   @Transactional
